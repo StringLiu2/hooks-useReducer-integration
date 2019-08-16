@@ -1,5 +1,6 @@
 #基于React的createContext, useContext, useReducer封装的组合reducer库
 
+## reducer.ts redux-custom.tsx test.tsx (使用案例,然后把组件直接引入到index.tsx中使用,使用JavaScript的大佬就把文件改一下除去一些类型定义等)
 ## 库代码如下:
 ``` ts
 import React, { Context, createContext, useContext, useReducer } from 'react';
