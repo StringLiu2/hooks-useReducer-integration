@@ -1,7 +1,3 @@
-#基于React的createContext, useContext, useReducer封装的组合reducer库
-
-## 库代码如下:
-``` ts
 import React, { Context, createContext, useContext, useReducer } from 'react';
 /** 
  * @createContext ProviderContext 一个创建完毕的context
@@ -40,48 +36,3 @@ export function combineReducers(reducers: any) {//整合reducer函数的对象�
         }, {});
     }
 }
-```
-## 使用方式: 
-### reducer.ts文件
-``` ts
-import { combineReducers } from './redux-custom';
-const initialReucer1 = {
-    count: 1
-}
-const initialReucer2 = {
-    user: {}
-}
-function reducer1(state = initialReucer1, action: any) {
-    switch (action.type) {
-        case 'ADD_COUNTER':
-            return { ...state, count: state.count + 1 }
-        default:
-            return state;
-    }
-}
-function reducer2(state = initialReucer2, action: any) {
-    switch (action.type) {
-        default:
-            return state;
-    }
-}
-
-export const reducer = combineReducers({ reducer1, reducer2 });//合并reducer
-export const initialState = { reducer1: initialReucer1, reducer2: initialReucer2 };//合并initialState
-```
-### test.tsx
-```ts
-import React from 'react'
-import provider, { useCustomRedux } from './redux-custom';
-import { reducer, initialState } from './reducer';
-function Test() {
-    const { state, dispatch } = useCustomRedux();
-    return (
-        <div>
-            <h2>{state.reducer1.count}</h2>
-            <button onClick={() => dispatch({ type: 'ADD_COUNTER' })}>触发dispatch-action</button>
-        </div>
-    )
-}
-export default provider(reducer, initialState)(Test);
-```
