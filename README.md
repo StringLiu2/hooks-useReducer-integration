@@ -1,8 +1,8 @@
-#基于React的createContext, useContext, useReducer封装的组合reducer库
+#基于React的createContext, useContext, useReducer封装的组合reducer库(优化了useCustomRedux成为一个泛型函数)
 
 ## reducer.ts redux-custom.tsx test.tsx (使用案例,然后把组件直接引入到index.tsx中使用,使用JavaScript的大佬就把文件改一下除去一些类型定义等)
 ## 库代码如下:
-``` ts
+``` js
 import React, { Context, createContext, useContext, useReducer } from 'react';
 /** 
  * @createContext ProviderContext 一个创建完毕的context
@@ -26,8 +26,15 @@ export default (reducer: Function, initialState: any) => (Com: React.FC | React.
  *      获取自定义的redux
  *  @state 这个参数是需要拿来使用的state 
  *  @dispatch 这个参数是dispatch分发action使用的
+ *  @T 接收一个state的类型，是总体的state的类型
  */
-export const useCustomRedux = () => useContext(ProviderContext);
+export function useCustomRedux<T>() {
+    interface Type {
+        dispatch: Dispatch<T>;
+        state: T;
+    }
+    return useContext<Type>(ProviderContext);
+}
 
 /**接受一个包含多个reducer函数的对象，返回一个新的reducer函数
  * @param reducers 传入多个reducer,用于整合成一个reducer
@@ -44,7 +51,7 @@ export function combineReducers(reducers: any) {//整合reducer函数的对象�
 ```
 ## 使用方式: 
 ### reducer.ts文件
-``` ts
+``` js
 import { combineReducers } from './redux-custom';
 const initialReucer1 = {
     count: 1
@@ -71,12 +78,14 @@ export const reducer = combineReducers({ reducer1, reducer2 });//合并reducer
 export const initialState = { reducer1: initialReucer1, reducer2: initialReucer2 };//合并initialState
 ```
 ### test.tsx
-```ts
+```js
 import React from 'react'
 import provider, { useCustomRedux } from './redux-custom';
 import { reducer, initialState } from './reducer';
 function Test() {
-    const { state, dispatch } = useCustomRedux();
+    //优化
+    const { state, dispatch } = useCustomRedux<typeof initialState>();
+    // const { state, dispatch } = useCustomRedux();
     return (
         <div>
             <h2>{state.reducer1.count}</h2>
