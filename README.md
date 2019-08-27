@@ -1,5 +1,8 @@
 #基于React的createContext, useContext, useReducer封装的组合reducer库(优化了useCustomRedux成为一个泛型函数)
-
+### 安装依赖库:
+```$
+        npm i redux-custom
+```
 ## reducer.ts redux-custom.tsx test.tsx (使用案例,然后把组件直接引入到index.tsx中使用,使用JavaScript的大佬就把文件改一下除去一些类型定义等)
 ## 库代码如下:
 ``` js
